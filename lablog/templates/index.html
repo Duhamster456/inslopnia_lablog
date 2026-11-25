@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% from 'code.html' import code_block %}
+{% block title %}{{ guide.title }}{% endblock %}
+{% block main_class %}page docs-page{% endblock %}
+{% block content %}
+<section class="guide-hero" aria-labelledby="guide-title">
+    <div class="hero-content">
+        <h1 id="guide-title">API лабораторного журнала</h1>
+        <p>{{ guide.summary }}</p>
+        <div class="inline">
+            <a class="button primary" href="#auth">Подключиться к API</a>
+            <a class="button quiet" href="#requests">Примеры запросов</a>
+        </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+        <img src="{{ url_for('static', filename='inslopnia.svg') }}" width="1055" height="625" alt="">
+    </div>
+</section>
+
+<div class="docs-layout">
+    <nav class="docs-nav" aria-labelledby="docs-nav-title">
+        <h2 id="docs-nav-title">На этой странице</h2>
+        <a href="#auth">Подключение</a>
+        <a href="#fields">Поля записи</a>
+        <a href="#requests">Запросы</a>
+        <a href="#errors">Ошибки и лимиты</a>
+        <a href="#retrieval">Поиск для RAG</a>
+    </nav>
+
+    <div class="docs-content">
+        <section class="panel docs-section" aria-labelledby="auth">
+            <h2 id="auth">Подключение к API</h2>
+            <p>{{ guide.authentication.description }}</p>
+            {{ code_block('auth-header', 'Заголовок запроса', guide.authentication.header ~ ': ' ~ guide.authentication.value, 'Скопировать заголовок Authorization') }}
+            <p>{{ guide.instruction.description }}</p>
+            <p>{{ guide.base_url }} {{ guide.examples_setup.description }}</p>
+            {{ code_block('setup-command', 'Подготовка окружения', guide.examples_setup.command, 'Скопировать команды подготовки') }}
+        </section>
+
+        <section class="panel docs-section" aria-labelledby="fields">
+            <h2 id="fields">Поля записи</h2>
+            <div class="table-wrap">
+                <table class="field-table">
+                    <thead><tr><th scope="col">Поле и тип</th><th scope="col">Описание</th></tr></thead>
+                    <tbody>
+                        {% for field in guide.entry_fields %}
+                        <tr>
+                            <th scope="row"><code>{{ field.name }}</code><small class="field-type"><code>{{ field.type }}</code></small></th>
+                            <td>{{ field.description }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="requests-section" aria-labelledby="requests">
+            <h2 id="requests">Запросы</h2>
+            {% for endpoint in guide.endpoints %}
+            <article class="panel endpoint">
+                <header class="endpoint-heading">
+                    <h3><span class="method" data-method="{{ endpoint.method }}">{{ endpoint.method }}</span> <code>{{ endpoint.path }}</code></h3>
+                    <code class="http-status" aria-label="Код успешного ответа {{ endpoint.success.status }}">{{ endpoint.success.status }}</code>
+                </header>
+                <div class="endpoint-content">
+                    <p>{{ endpoint.description }}</p>
+                    {% for name, description in endpoint.request.path_parameters|default({})|items %}
+                    <p><code>{{ name }}</code> — {{ description }}</p>
+                    {% endfor %}
+                    {% for name, parameter in endpoint.request.query_parameters|default({})|items %}
+                    <p><code>{{ name }}</code> — {{ parameter.description }}</p>
+                    {% endfor %}
+                    {% if endpoint.request.content_type %}
+                    <p>Формат тела <code>{{ endpoint.request.content_type }}</code>.
+                        {% if endpoint.request.required %}Обязательные поля <code>{{ endpoint.request.required|join(', ') }}</code>.{% endif %}
+                        {% if endpoint.request.optional %}Необязательные поля <code>{{ endpoint.request.optional|join(', ') }}</code>.{% endif %}
+                        {{ endpoint.request.body_rule|default('') }}
+                    </p>
+                    {% endif %}
+                    {{ code_block('request-' ~ loop.index, 'Команда curl', endpoint.curl, 'Скопировать команду ' ~ endpoint.method ~ ' ' ~ endpoint.path) }}
+                    {% if endpoint.success.example is defined %}
+                    <details class="response">
+                        <summary>Пример ответа</summary>
+                        <p>{{ endpoint.success.description }}</p>
+                        {{ code_block('response-' ~ loop.index, 'JSON', endpoint.success.example|tojson(indent=2), 'Скопировать ответ на ' ~ endpoint.method ~ ' ' ~ endpoint.path) }}
+                    </details>
+                    {% else %}
+                    <p class="muted">{{ endpoint.success.description }}</p>
+                    {% endif %}
+                    {% if endpoint.success.status == 201 %}
+                    {{ code_block('entry-id', 'Идентификатор для следующих запросов', guide.examples_setup.after_create, 'Скопировать пример ENTRY_ID') }}
+                    {% endif %}
+                </div>
+            </article>
+            {% endfor %}
+        </section>
+
+        <section class="panel docs-section" aria-labelledby="errors">
+            <h2 id="errors">Ошибки и лимиты</h2>
+            <p>Ошибки API возвращаются в JSON.</p>
+            {{ code_block('error-example', 'Пример ошибки', guide.errors.example|tojson, 'Скопировать пример ошибки') }}
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th scope="col">Статус</th><th scope="col">Причина</th></tr></thead>
+                    <tbody>
+                        {% for status in guide.errors.statuses %}
+                        <tr><th scope="row"><code>{{ status.code }}</code></th><td>{{ status.meaning }}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <ul class="content-list">{% for limit in guide.limits %}<li>{{ limit }}</li>{% endfor %}</ul>
+        </section>
+
+        <section class="panel docs-section" aria-labelledby="retrieval">
+            <h2 id="retrieval">Поиск контекста для RAG</h2>
+            <ol class="content-list">{% for step in guide.retrieval %}<li>{{ step }}</li>{% endfor %}</ol>
+        </section>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'admin/base.html' %}
+{% block title %}{{ 'Редактирование записи' if entry else 'Новая запись' }} · Журнал inslopnia{% endblock %}
+{% block main_class %}page editor-page{% endblock %}
+{% macro field_error(field) %}{% if error_field == field %}aria-invalid="true" aria-errormessage="entry-error"{% endif %}{% endmacro %}
+{% block content %}
+<div class="form-heading">
+    <a class="breadcrumb" href="{{ url_for('admin.dashboard', _anchor='entries') }}">Записи</a>
+    <h1>{{ 'Редактирование записи' if entry else 'Новая запись' }}</h1>
+</div>
+<form class="panel form-panel" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    {% if error %}<p class="error" id="entry-error" role="alert">{{ error }}</p>{% endif %}
+    <div class="field">
+        <label for="title">Название</label>
+        <input id="title" name="title" value="{{ values.get('title') or '' }}" required {{ field_error('title') }}>
+    </div>
+    {% if not entry %}
+    <div class="field">
+        <label for="owner-id">Автор</label>
+        <select id="owner-id" name="owner_id">
+            <option value="">Администратор</option>
+            {% for user in users %}<option value="{{ user.id }}"{% if user.id == values.get('owner_id') %} selected{% endif %}>{{ user.name }}</option>{% endfor %}
+        </select>
+    </div>
+    {% endif %}
+    <div class="form-grid">
+        <div class="field">
+            <label for="timestamp">Время эксперимента</label>
+            <input class="code-input" id="timestamp" name="timestamp" value="{{ values.get('timestamp') or '' }}"
+                   placeholder="2026-11-26T12:00:00Z" aria-describedby="time-hint" {{ field_error('timestamp') }}>
+            <small id="time-hint">RFC 3339 с часовым поясом. Пустое поле {{ 'сохранит текущее значение' if entry else 'подставит время создания' }}.</small>
+        </div>
+        <div class="field">
+            <label for="commit-hash">Хеш коммита <span class="muted">(необязательно)</span></label>
+            <input class="code-input" id="commit-hash" name="commit_hash" value="{{ values.get('commit_hash') or '' }}" spellcheck="false" {{ field_error('commit_hash') }}>
+        </div>
+    </div>
+    <div class="field">
+        <label for="url">Ссылка на файлы эксперимента <span class="muted">(необязательно)</span></label>
+        <input class="code-input" id="url" name="url" type="url" value="{{ values.get('url') or '' }}"
+               placeholder="https://files.example.org/experiment/" spellcheck="false" {{ field_error('url') }}>
+    </div>
+    <div class="field">
+        <label for="text">Текст записи</label>
+        <textarea class="code-input" id="text" name="text" rows="14" {{ field_error('text') }}>
+{{ values.get('text') or '' }}</textarea>
+    </div>
+    <div class="form-actions">
+        <button class="primary" type="submit">Сохранить запись</button>
+        <a class="button quiet" href="{{ url_for('admin.dashboard', _anchor='entries') }}">Отмена</a>
+    </div>
+</form>
+{% endblock %}

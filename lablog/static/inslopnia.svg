@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="90 300 1055 625" width="1055" height="625"
+  role="img" aria-labelledby="title">
+  <title id="title">inslopnia</title>
+  <defs>
+    <path id="eye-outline" d="M98.32 602.28 C148.05 538.37 206.78 476.34 273.45 427.69 C340.11 379.04 414.72 343.77 495.25 325.53
+      C575.78 307.28 662.24 306.07 742.8 322.83 C823.35 339.59 897.99 374.32 964.83 423.21 C1031.67 472.1 1090.71 535.15 1136.93 600.74
+      C1090.47 672.51 1036.82 737.25 970.61 789.22 C904.4 841.19 825.62 880.39 743.6 900.07 C661.58 919.74 576.32 919.89 494.37 899.99
+      C412.43 880.08 333.79 840.11 267.53 788.26 C201.26 736.4 147.38 672.65 98.32 602.28 Z"/>
+    <radialGradient id="light" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="292"
+      gradientTransform="translate(618.59 611.91) scale(1 0.9365)">
+      <stop offset="0.0000" stop-color="#fed16c"/>
+      <stop offset="0.4110" stop-color="#fed371"/>
+      <stop offset="0.4795" stop-color="#fed983"/>
+      <stop offset="0.5308" stop-color="#fedd91"/>
+      <stop offset="0.5822" stop-color="#fee1a0"/>
+      <stop offset="0.6336" stop-color="#fee5ae"/>
+      <stop offset="0.6849" stop-color="#fee9bd"/>
+      <stop offset="0.7534" stop-color="#feeece"/>
+      <stop offset="0.8219" stop-color="#fef3de"/>
+      <stop offset="0.8904" stop-color="#fef7ec"/>
+      <stop offset="0.9349" stop-color="#fefaf4"/>
+      <stop offset="0.9760" stop-color="#fefcf9"/>
+      <stop offset="1.0000" stop-color="#fefefe"/>
+    </radialGradient>
+    <radialGradient id="shade" gradientUnits="userSpaceOnUse" cx="0" cy="0" r="405"
+      gradientTransform="translate(616.7 611.9) scale(1 0.8660)">
+      <stop offset="0.0000" stop-color="#402200"/>
+      <stop offset="0.5062" stop-color="#402200"/>
+      <stop offset="0.5432" stop-color="#402200"/>
+      <stop offset="0.5753" stop-color="#402200"/>
+      <stop offset="0.6099" stop-color="#341c00"/>
+      <stop offset="0.6444" stop-color="#281500"/>
+      <stop offset="0.6790" stop-color="#1d0f00"/>
+      <stop offset="0.7185" stop-color="#140a00"/>
+      <stop offset="0.7654" stop-color="#0b0500"/>
+      <stop offset="0.8222" stop-color="#050200"/>
+      <stop offset="0.8790" stop-color="#020000"/>
+      <stop offset="0.9383" stop-color="#010000"/>
+      <stop offset="1.0000" stop-color="#000000"/>
+    </radialGradient>
+    <linearGradient id="shade-fade" gradientUnits="userSpaceOnUse" x1="0" y1="344" x2="0" y2="882">
+      <stop stop-color="#000"/>
+      <stop offset=".006" stop-color="#000"/>
+      <stop offset=".026" stop-color="#000" stop-opacity="0"/>
+      <stop offset=".980" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000"/>
+    </linearGradient>
+    <radialGradient id="cross-shade" cx="50%" cy="50%" r="63%">
+      <stop stop-color="#070300"/>
+      <stop offset=".55" stop-color="#0d0500"/>
+      <stop offset="1" stop-color="#190c01"/>
+    </radialGradient>
+  </defs>
+  <g id="emblem">
+    <use xlink:href="#eye-outline" fill="url(#shade)"/>
+    <use xlink:href="#eye-outline" fill="url(#shade-fade)"/>
+    <path fill="url(#light)" d="M208.82 603.57 C260.82 544.19 322.76 494.18 392.94 457.05 C463.12 419.92 541.52 395.66 619.63 394.64
+      C697.74 393.63 775.55 415.86 846.25 452.75 C916.94 489.64 980.51 541.18 1027.31 602.84 C979.84 668.62 920.1 724.67 849.88 765.68
+      C779.67 806.68 698.98 832.62 618.68 832.85 C538.38 833.08 458.47 807.59 389.06 765.29 C319.64 723 260.74 663.9 208.82 603.57
+      Z"/>
+    <g id="sun" fill="#fe9a04">
+      <path d="M801.02 609.28 L748.41 633.6 A131.23 127.2 0 0 0 748.26 583.92 Z"/>
+      <path d="M776.44 696.67 L719.29 691.88 A131.23 127.2 0 0 0 744.39 648.55 Z"/>
+      <path d="M712.45 760.67 L663.73 728.92 A131.23 127.2 0 0 0 706.89 704.13 Z"/>
+      <path d="M619.61 786.27 L594.7 734 A131.23 127.2 0 0 0 644.86 733.95 Z"/>
+      <path d="M527.12 761.26 L532.51 704.24 A131.23 127.2 0 0 0 576.06 729.1 Z"/>
+      <path d="M462.81 696.87 L494.89 648.62 A131.23 127.2 0 0 0 519.88 691.76 Z"/>
+      <path d="M438.27 609.31 L491 583.95 A131.23 127.2 0 0 0 490.87 633.66 Z"/>
+      <path d="M462.89 521.27 L520.43 525.86 A131.23 127.2 0 0 0 495.19 568.76 Z"/>
+      <path d="M527.08 456.98 L575.65 489.28 A131.23 127.2 0 0 0 532.72 513.82 Z"/>
+      <path d="M619.61 431.81 L644.76 484.28 A131.23 127.2 0 0 0 594.46 484.29 Z"/>
+      <path d="M711.53 456.73 L706.24 513.56 A131.23 127.2 0 0 0 663.42 489.22 Z"/>
+      <path d="M776.17 521.17 L744.01 568.57 A131.23 127.2 0 0 0 718.75 525.76 Z"/>
+      <ellipse cx="619.61" cy="609.26" rx="122.01" ry="118.13" fill="#fe9b04"/>
+    </g>
+    <path fill="url(#cross-shade)" d="M562.47 527.85 L618.82 583.39 676.08 527.78 706.33 557.94 649.14 613.36 705.39 668.83 674.36 699.09 618.42 643.59 561.61 698.92 531.17 668.37 588.33 613.18 531.85 557.83 Z"/>
+  </g>
+</svg>

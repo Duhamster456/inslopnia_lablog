@@ -1,0 +1,14 @@
+{% extends 'admin/base.html' %}
+{% block title %}Удаление записи · Журнал inslopnia{% endblock %}
+{% block main_class %}page compact-page{% endblock %}
+{% block content %}
+<form class="panel form-panel deletion-panel" method="post" aria-labelledby="delete-title">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <h1 id="delete-title">Удаление записи</h1>
+    <p>Удалить запись <strong>{{ entry.title }}</strong>?</p>
+    <div class="form-actions">
+        <button class="destructive" type="submit">Удалить запись</button>
+        <a class="button quiet" href="{{ url_for('admin.dashboard', _anchor='entries') }}">Отмена</a>
+    </div>
+</form>
+{% endblock %}

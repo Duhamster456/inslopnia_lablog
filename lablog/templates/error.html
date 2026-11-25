@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Ошибка {{ code }} · Журнал inslopnia{% endblock %}
+{% block main_class %}page compact-page{% endblock %}
+{% set admin_error = request.path == '/inslopnia_admin' or request.path.startswith('/inslopnia_admin/') %}
+{% block brand_url %}{{ url_for('admin.dashboard' if admin_error else 'index') }}{% endblock %}
+{% block brand_section %}{{ 'Админка' if admin_error else 'Лабораторный журнал' }}{% endblock %}
+{% block content %}
+<section class="panel form-panel deletion-panel" aria-labelledby="error-title">
+    <h1 id="error-title">Ошибка {{ code }}</h1>
+    <p>{{ message }}</p>
+    <div class="form-actions">
+        {% if admin_error %}
+        <a class="button quiet" href="{{ url_for('admin.dashboard') }}">В админку</a>
+        {% else %}
+        <a class="button quiet" href="{{ url_for('index') }}">К инструкции API</a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

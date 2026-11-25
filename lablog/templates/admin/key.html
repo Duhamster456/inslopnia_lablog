@@ -1,0 +1,20 @@
+{% extends 'admin/base.html' %}
+{% block title %}Ключ API · Журнал inslopnia{% endblock %}
+{% block main_class %}page compact-page{% endblock %}
+{% block content %}
+<section class="panel form-panel" aria-labelledby="key-title">
+    <h1 id="key-title">Ключ API</h1>
+    <p>Пользователь <strong>{{ name }}</strong></p>
+    <div class="field">
+        <label for="api-key">Новый ключ</label>
+        <div class="input-action">
+            <input class="code-input" id="api-key" value="{{ token }}" readonly spellcheck="false" aria-describedby="key-hint">
+            <button class="quiet copy-button" type="button" data-copy="api-key" aria-label="Скопировать ключ API" hidden>Копировать</button>
+        </div>
+        <small id="key-hint">Полное значение показывается только при выдаче.</small>
+    </div>
+    <div class="form-actions">
+        <a class="button primary" href="{{ url_for('admin.dashboard', _anchor='users') }}">К пользователям и ключам</a>
+    </div>
+</section>
+{% endblock %}

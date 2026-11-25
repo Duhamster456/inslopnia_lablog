@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block brand_url %}{{ url_for('admin.dashboard') }}{% endblock %}
+{% block brand_section %}Админка{% endblock %}
+{% block header_actions %}
+    {% if session.get('admin') %}
+    <form method="post" action="{{ url_for('admin.logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="quiet" type="submit">Выйти</button>
+    </form>
+    {% endif %}
+{% endblock %}

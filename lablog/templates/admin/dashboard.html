@@ -1,0 +1,98 @@
+{% extends 'admin/base.html' %}
+{% block title %}Админка · Журнал inslopnia{% endblock %}
+{% block main_class %}page dashboard{% endblock %}
+{% block content %}
+<div class="page-heading">
+    <h1>Управление журналом</h1>
+    <nav class="section-links" aria-label="Разделы админки">
+        <a href="#entries">Записи</a>
+        <a href="#users">Пользователи и ключи</a>
+    </nav>
+</div>
+{% for message in get_flashed_messages(category_filter=['message']) %}<p class="notice" role="status">{{ message }}</p>{% endfor %}
+
+<div class="dashboard-layout">
+    <section class="panel" aria-labelledby="entries">
+        <div class="section-heading">
+            <h2 id="entries">Записи</h2>
+            <a class="button primary" href="{{ url_for('admin.create_entry') }}">Создать запись</a>
+        </div>
+        {% if entries %}
+        <ul class="entry-list">
+            {% for entry in entries %}
+            <li class="entry-row">
+                <div class="entry-record">
+                    <h3>{{ entry.title }}</h3>
+                    <div class="entry-meta">
+                        <span>{{ entry.owner_name or 'Администратор' }}</span>
+                        <time datetime="{{ entry.timestamp }}">{{ entry.timestamp[:19]|replace('T', ' ') }} UTC</time>
+                        {% if entry.commit_hash %}<code class="commit-hash">{{ entry.commit_hash }}</code>{% endif %}
+                        {% if entry.url %}<a href="{{ entry.url }}" target="_blank" rel="noopener noreferrer">Файлы эксперимента</a>{% endif %}
+                    </div>
+                </div>
+                <div class="entry-actions">
+                    <a class="button quiet" href="{{ url_for('admin.edit_entry', entry_id=entry.id) }}" aria-label="Редактировать запись {{ entry.title }}">Редактировать</a>
+                    <a class="button quiet danger" href="{{ url_for('admin.delete_entry', entry_id=entry.id) }}" aria-label="Удалить запись {{ entry.title }}">Удалить</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="empty-state">В журнале пока нет записей.</p>
+        {% endif %}
+    </section>
+
+    <section class="panel" aria-labelledby="users">
+        <div class="section-heading">
+            <h2 id="users">Пользователи и ключи API</h2>
+        </div>
+        {% for message in get_flashed_messages(category_filter=['users']) %}<p class="notice" role="status">{{ message }}</p>{% endfor %}
+        <form class="field user-add" method="post" action="{{ url_for('admin.create_user') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <label for="new-user">Имя нового пользователя</label>
+            <div class="input-action">
+                <input id="new-user" name="name" required>
+                <button class="quiet" type="submit">Добавить</button>
+            </div>
+        </form>
+        {% for user in users %}
+        <article class="user-row">
+            <div class="user-heading">
+                <h3>{{ user.name }}</h3>
+                <form method="post" action="{{ url_for('admin.issue_key', user_id=user.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button class="quiet" type="submit" aria-label="Выдать ключ пользователю {{ user.name }}">Выдать ключ</button>
+                </form>
+            </div>
+            {% if user.api_keys %}
+            <ul class="key-list">
+                {% for key in user.api_keys %}
+                <li>
+                    <div class="key-meta">
+                        <code>{{ key.prefix }}…</code>
+                        <time datetime="{{ key.created_at }}">{{ key.created_at[:19]|replace('T', ' ') }} UTC</time>
+                    </div>
+                    <form method="post" action="{{ url_for('admin.revoke_key', key_id=key.id) }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button class="quiet danger" type="submit" aria-label="Отозвать ключ {{ key.prefix }}">Отозвать</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="muted no-keys">Действующих ключей нет.</p>
+            {% endif %}
+            <details class="rename-user">
+                <summary>Изменить имя</summary>
+                <form class="field" method="post" action="{{ url_for('admin.rename_user', user_id=user.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <label for="name-{{ user.id }}">Имя пользователя</label>
+                    <input id="name-{{ user.id }}" name="name" value="{{ user.name }}" required>
+                    <button class="quiet" type="submit">Сохранить имя</button>
+                </form>
+            </details>
+        </article>
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}

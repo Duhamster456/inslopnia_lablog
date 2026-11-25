@@ -1,0 +1,19 @@
+{% extends 'admin/base.html' %}
+{% block title %}Вход · Журнал inslopnia{% endblock %}
+{% block main_class %}page compact-page login-page{% endblock %}
+{% block content %}
+<form class="panel form-panel login-form" method="post" action="{{ url_for('admin.login') }}" aria-labelledby="login-title">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <h1 id="login-title">Вход в админку</h1>
+    {% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}
+    <div class="field">
+        <label for="username">Логин</label>
+        <input id="username" name="username" autocomplete="username" required autofocus>
+    </div>
+    <div class="field">
+        <label for="password">Пароль</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+    </div>
+    <button class="primary" type="submit">Войти</button>
+</form>
+{% endblock %}
